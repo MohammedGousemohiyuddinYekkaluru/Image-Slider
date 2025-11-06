@@ -4,15 +4,16 @@ const dotsContainer = document.querySelector(".dots-container");
 async function fetchListOfImages() {
   try {
     const response = await fetch(
-      "https://picsum.photos/v2/list?page=1&limit=5",
-      { method: "GET"}
+      "https://picsum.photos/v2/list?page=1&limit=10",
+      {
+        method: "GET",
+      }
     );
 
     const imagesList = await response.json();
-
     if (imagesList && imagesList.length > 0) displayImages(imagesList);
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -20,22 +21,20 @@ function displayImages(getImagesList) {
   slider.innerHTML = getImagesList
     .map(
       (item) => `
-        <div class='slide'>
-        <img src=${item.download_url} alt=${item.id} />
-        </div>
-        `
+    <div class="slide">
+    <img src= ${item.download_url} alt=${item.id} />
+    </div>
+    `
     )
-    .join("");
+    .join(" ");
 
   dotsContainer.innerHTML = getImagesList
     .map(
       (item, index) => `
-         <span class = "dot ${
-           index === 0 ? "active" : ""
-         }" data-slide="${index}"></span>
-        `
+    <span class="dot ${index === 0 ? "active" : ""}" data-slide=${index}></span>
+    `
     )
-    .join("");
+    .join(" ");
 }
 
 fetchListOfImages();
@@ -52,18 +51,21 @@ setTimeout(() => {
     document
       .querySelectorAll(".dot")
       .forEach((dotItem) => dotItem.classList.remove("active"));
-
     document
       .querySelector(`.dot[data-slide="${slide}"]`)
       .classList.add("active");
   }
 
   function changeCurrentSlide(currentSlide) {
-    slides.forEach((slideItem, index) => 
-        (slideItem.style.transform = `translateX(${100 * (index - currentSlide)}%)`))
+    slides.forEach(
+      (slideItem, index) =>
+        (slideItem.style.transform = `translateX(${
+          100 * (index - currentSlide)
+        }%)`)
+    );
   }
 
-  changeCurrentSlide(currentSlide);
+  changeCurrentSlide(currentSlide)
 
   nextBtn.addEventListener("click", () => {
     currentSlide++;
@@ -80,19 +82,18 @@ setTimeout(() => {
     currentSlide--;
 
     if (0 > currentSlide) {
-      currentSlide = slides.length -1;
+      currentSlide = slides.length - 1;
     }
+
     changeCurrentSlide(currentSlide);
     activeDot(currentSlide);
   });
 
   dotsContainer.addEventListener("click", (event) => {
     if(event.target.classList.contains('dot')){
-        const currentSlide = event.target.dataset.slide;
-        changeCurrentSlide(currentSlide);
-        activeDot(currentSlide);
+        const currentSlide = event.target.dataset.slide
+        changeCurrentSlide(currentSlide)
+        activeDot(currentSlide)
     }
   });
 }, 1000);
-
-// handleImageSlider();
