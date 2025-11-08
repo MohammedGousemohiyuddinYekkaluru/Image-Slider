@@ -17,6 +17,8 @@ async function fetchListOfImages() {
   }
 }
 
+fetchListOfImages();
+
 function displayImages(getImagesList) {
   slider.innerHTML = getImagesList
     .map(
@@ -35,14 +37,15 @@ function displayImages(getImagesList) {
     `
     )
     .join(" ");
-}
 
-fetchListOfImages();
+    initializeSlider();
+}
 
 //slider functionality
 
-setTimeout(() => {
-  const slides = document.querySelectorAll(".slide");
+
+function initializeSlider(){
+    const slides = document.querySelectorAll(".slide");
   const prevBtn = document.querySelector(".prev");
   const nextBtn = document.querySelector(".next");
   let currentSlide = 0;
@@ -96,4 +99,4 @@ setTimeout(() => {
         activeDot(currentSlide)
     }
   });
-}, 1000);
+}
